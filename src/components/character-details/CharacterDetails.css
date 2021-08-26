@@ -1,0 +1,22 @@
+.character-details {
+    padding: 20px;
+}
+
+.character-details__atributes {
+    background-color: #EEE;
+    color: green;
+    font-size: 18px;
+    padding: 20px;
+}
+
+.character-details__films {
+    padding: 20px;
+}
+
+h2{
+    text-decoration: none;
+}
+
+h3 {
+    color: red;
+}
