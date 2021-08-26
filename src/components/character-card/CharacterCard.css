@@ -1,0 +1,22 @@
+.character_card {
+    background-color: black;
+    color: cyan;
+    margin-bottom: 10px;
+    padding: 10px;
+}
+
+.character_card-footer{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+h2 {
+    text-decoration: underline;
+}
+
+a:active,
+a:hover,
+a:visited {
+    color: cyan;
+}
