@@ -1,12 +1,15 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import { Link } from "react-router-dom";
 import { Container, Row, Col } from 'react-bootstrap';
+import { getFilmsPromise } from '../../api/index'
 
 import mockedDetails from '../../mockData/details.json';
 
 import './CharacterDetails.css';
 
 export const CharacterDetails = () => {
+    const [filmNames, setFilmNames] = useState(null);
+    
     const { 
         name, 
         height, 
@@ -16,8 +19,31 @@ export const CharacterDetails = () => {
         eye_color, 
         skin_color, 
         birth_year, 
-        films 
     } = mockedDetails;
+
+    const _buildPromises = (urls) => {
+        return urls.map(url => (getFilmsPromise(url))) 
+    }
+
+    useEffect(() => {
+        let filmsArray = [];
+
+        const fetch = async (urls) => {        
+            await Promise.all(_buildPromises(urls))
+            .then(results => {
+                results.forEach( res => {
+                    filmsArray.push({title: res.data.title, date: res.data.release_date});
+                })
+            }).catch(errorMsg => {
+                console.log(errorMsg)
+            });
+
+            setFilmNames(filmsArray);
+        }
+
+        fetch(mockedDetails.films);
+
+      }, [])
 
     return (
         <Container fluid>
@@ -43,11 +69,15 @@ export const CharacterDetails = () => {
             <Row>
                 <Col>
                     <div className='character-details__films'>
-                        <h3>{`${films.length} films`}</h3>
+                        {filmNames && <h3>{`${filmNames.length} films`}</h3>}
                         <ul>
-                        {films.map((film, key) => (
-                            <li>{film}</li>
-                            ))
+                        {filmNames &&
+                            filmNames.map((film, key) => {
+                                const currentYear = new Date().getFullYear();
+                                const releaseYear = new Date(film.date).getFullYear();
+
+                                return <li key={key}>{`${film.title}: ${currentYear - releaseYear} years ago`}</li>
+                            })
                         }
                         </ul>
                     </div>
