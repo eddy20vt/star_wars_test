@@ -2,8 +2,9 @@ import { useState, useEffect } from 'react';
 import {
   BrowserRouter as Router,
   Switch,
-  Route
-} from "react-router-dom";
+  Route,
+} from 'react-router-dom';
+
 
 import MainContainer from './components/MainContainer';
 import CharacterDetails from './components/character-details/CharacterDetails';
@@ -24,14 +25,12 @@ function App() {
 
   return (
     <Router>
-      {/* A <Switch> looks through its children <Route>s and
-          renders the first one that matches the current URL. */}
       <Switch>
         <Route path="/about">
           {characters && <MainContainer data={[...characters].slice(0,9)}/>}
         </Route>
         <Route path="/details">
-          <CharacterDetails />
+          <CharacterDetails/>
         </Route>
         <Route path="/">
           <div className="App">

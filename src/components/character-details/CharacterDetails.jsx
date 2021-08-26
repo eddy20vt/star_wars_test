@@ -1,15 +1,15 @@
 import React, {useEffect, useState} from 'react'
-import { Link } from "react-router-dom";
 import { Container, Row, Col } from 'react-bootstrap';
 import { getFilmsPromise } from '../../api/index'
-
+import { useHistory } from 'react-router-dom';
 import mockedDetails from '../../mockData/details.json';
 
 import './CharacterDetails.css';
 
 export const CharacterDetails = () => {
     const [filmNames, setFilmNames] = useState(null);
-    
+    const history = useHistory();
+
     const { 
         name, 
         height, 
@@ -49,7 +49,7 @@ export const CharacterDetails = () => {
         <Container fluid>
             <Row>
                 <Col>
-                    <Link to="/details"><h2>Back home</h2></Link>
+                    <h4 onClick={() => history.goBack()}> {"< Back Home"} </h4>
                     <h2>{name}</h2>
                 </Col>
             </Row>
