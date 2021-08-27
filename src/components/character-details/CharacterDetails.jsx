@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container, Row, Col, Spinner } from 'react-bootstrap';
 import { getFilmsPromise } from '../../api/index'
 import { useHistory } from 'react-router-dom';
 import mockedDetails from '../../mockData/details.json';
@@ -46,10 +46,10 @@ export const CharacterDetails = () => {
       }, [])
 
     return (
-        <Container fluid>
+        <Container fluid className='character-details'>
             <Row>
                 <Col>
-                    <h4 onClick={() => history.goBack()}> {"< Back Home"} </h4>
+                    <a href='##' onClick={() => history.goBack()}> {"< Back Home"} </a>
                     <h2>{name}</h2>
                 </Col>
             </Row>
@@ -69,17 +69,22 @@ export const CharacterDetails = () => {
             <Row>
                 <Col>
                     <div className='character-details__films'>
-                        {filmNames && <h3>{`${filmNames.length} films`}</h3>}
-                        <ul>
+                        {!filmNames && 
+                            <Spinner animation="border" variant="primary" />}
                         {filmNames &&
-                            filmNames.map((film, key) => {
-                                const currentYear = new Date().getFullYear();
-                                const releaseYear = new Date(film.date).getFullYear();
+                            <>
+                            <h3>{`${filmNames.length} films`}</h3>
+                            <ul>
+                            {filmNames.map((film, key) => {
+                                    const currentYear = new Date().getFullYear();
+                                    const releaseYear = new Date(film.date).getFullYear();
 
-                                return <li key={key}>{`${film.title}: ${currentYear - releaseYear} years ago`}</li>
-                            })
+                                    return <li key={key}>{`${film.title}: ${currentYear - releaseYear} years ago`}</li>
+                                })
+                            }
+                            </ul>
+                            </>
                         }
-                        </ul>
                     </div>
                 </Col>
             </Row>

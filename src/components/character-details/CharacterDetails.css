@@ -20,3 +20,12 @@ h2{
 h3 {
     color: red;
 }
+
+.character-details a:hover,
+.character-details a:visited,
+.character-details a:focus,
+.character-details a:active
+{
+    font-size: 16px;
+    color: black;
+}
