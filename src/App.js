@@ -6,7 +6,7 @@ import {
 } from 'react-router-dom';
 
 
-import MainContainer from './components/MainContainer';
+import MainContainer from './components/main-container/MainContainer';
 import CharacterDetails from './components/character-details/CharacterDetails';
 
 import './App.css';
