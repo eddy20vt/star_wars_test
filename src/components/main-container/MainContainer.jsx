@@ -7,14 +7,14 @@ import { getPokemonListPromise } from '../../api/index'
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const MainContainer = (props) => {
+const MainContainer = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [pokemonsPageContent, setPokemonsPageContent] = useState([]);
     const [maxPageLoaded, setMaxPageLoaded] = useState(0);
     const [loading, setLoading] = useState(false);
     
-    const OFFSET = 10;
-    const INDEX = (OFFSET*(currentPage-1))-(currentPage-1); 
+    const OFFSET = 9;
+    const INDEX = (OFFSET*(currentPage-1)); 
 
     useEffect(() => {
         const fetch = async () => {        
@@ -44,81 +44,30 @@ const MainContainer = (props) => {
             setCurrentPage(currentPage+1)
         }
     }
-        
+     
+    const buildColumns = (columns,index) => {
+         let myCols = Array(columns).fill([]);
+
+         return myCols.map((theCol, pos) => 
+                    [...theCol,
+                    <Col xs={12} md={4} key={pos}>
+                        <Card 
+                            name={pokemonsPageContent[index+pos].name}
+                            films=''
+                            birthyear=''
+                        />
+                    </Col>]
+                )
+    }
+
     return (
         !loading && maxPageLoaded >= currentPage 
         ?
         <>
         <Container fluid>
-            <Row>
-                <Col xs={12} md={4}>
-                    <Card 
-                        name={pokemonsPageContent[INDEX].name}
-                        films={props.data[0].films.length}
-                        birthyear={props.data[0].birth_year}
-                    />
-                </Col>
-                <Col xs={12} md={4}>
-                    <Card 
-                        name={pokemonsPageContent[INDEX+1].name}
-                        films={props.data[1].films.length}
-                        birthyear={props.data[1].birth_year}
-                    />
-                </Col>
-                <Col xs={12} md={4}>
-                    <Card 
-                        name={pokemonsPageContent[INDEX+2].name}
-                        films={props.data[2].films.length}
-                        birthyear={props.data[2].birth_year}
-                    />
-                </Col>
-            </Row>
-            <Row>
-            <Col xs={12} md={4}>
-                    <Card 
-                        name={props.data[3].name}
-                        films={props.data[3].films.length}
-                        birthyear={props.data[3].birth_year}
-                    />
-                </Col>
-                <Col xs={12} md={4}>
-                    <Card 
-                        name={props.data[4].name}
-                        films={props.data[4].films.length}
-                        birthyear={props.data[4].birth_year}
-                    />
-                </Col>
-                <Col xs={12} md={4}>
-                    <Card 
-                        name={props.data[5].name}
-                        films={props.data[5].films.length}
-                        birthyear={props.data[5].birth_year}
-                    />
-                </Col>
-            </Row>
-            <Row>
-            <Col xs={12} md={4}>
-                    <Card 
-                        name={props.data[6].name}
-                        films={props.data[6].films.length}
-                        birthyear={props.data[6].birth_year}
-                    />
-                </Col>
-                <Col xs={12} md={4}>
-                    <Card 
-                        name={props.data[7].name}
-                        films={props.data[7].films.length}
-                        birthyear={props.data[7].birth_year}
-                    />
-                </Col>
-                <Col xs={12} md={4}>
-                    <Card 
-                        name={props.data[8].name}
-                        films={props.data[8].films.length}
-                        birthyear={props.data[8].birth_year}
-                    />
-                </Col>
-            </Row>
+            <Row>{buildColumns(3,INDEX)}</Row>
+            <Row>{buildColumns(3,(INDEX+3))}</Row>
+            <Row>{buildColumns(3,(INDEX+6))}</Row>
         </Container>
         <Button onClick={() => handleClick('previous')}>Previous</Button>
         <Button onClick={() => handleClick('next')}>Next</Button>
