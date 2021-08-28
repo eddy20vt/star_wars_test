@@ -7,7 +7,18 @@
     color: green;
     font-size: 18px;
     padding: 20px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: space-around;
+    justify-content: left;
 }
+
+@media (max-width: 600px) {
+    .character-details__atributes {
+        flex-direction: column;
+    }
+  }
 
 .character-details__films {
     padding: 20px;

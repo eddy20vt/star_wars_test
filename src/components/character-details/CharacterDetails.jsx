@@ -1,7 +1,12 @@
 import React, {useEffect, useState} from 'react'
+import { useSelector } from "react-redux";
 import { Container, Row, Col, Spinner } from 'react-bootstrap';
-import { getFilmsPromise } from '../../api/index'
 import { useHistory } from 'react-router-dom';
+
+
+import { getFilmsPromise } from '../../api/index'
+
+
 import mockedDetails from '../../mockData/details.json';
 
 import './CharacterDetails.css';
@@ -9,6 +14,7 @@ import './CharacterDetails.css';
 export const CharacterDetails = () => {
     const [filmNames, setFilmNames] = useState(null);
     const history = useHistory();
+    const storeState = useSelector(state => state);
 
     const { 
         name, 
@@ -19,7 +25,9 @@ export const CharacterDetails = () => {
         eye_color, 
         skin_color, 
         birth_year, 
-    } = mockedDetails;
+    } = storeState.characters[0][1];
+
+    // console.log('storeState.results[0][0]: ', storeState.characters[0][1]);
 
     const _buildPromises = (urls) => {
         return urls.map(url => (getFilmsPromise(url))) 

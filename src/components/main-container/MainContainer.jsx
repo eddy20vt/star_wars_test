@@ -1,26 +1,27 @@
 import React, {useEffect, useState} from 'react'
-import { Container, Row, Col, Button } from 'react-bootstrap'; 
-import Card from '../character-card/CharacterCard';
+import { useSelector, useDispatch } from "react-redux";
+import { Container, Row, Col, Button, Spinner } from 'react-bootstrap'; 
+import CharacterCard from '../character-card/CharacterCard';
 
 
-import { getPokemonListPromise } from '../../api/index'
+import { getCharactersPromise } from '../../api/index'
 
+import './MainContainer.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const MainContainer = () => {
-    const [currentPage, setCurrentPage] = useState(1);
-    const [pokemonsPageContent, setPokemonsPageContent] = useState([]);
     const [maxPageLoaded, setMaxPageLoaded] = useState(0);
     const [loading, setLoading] = useState(false);
-    
-    const OFFSET = 9;
-    const INDEX = (OFFSET*(currentPage-1)); 
+    // Redux
+    const currentPage = useSelector(state => state.pageCounter);
+    const dispatch = useDispatch();
 
     useEffect(() => {
         const fetch = async () => {        
-            await getPokemonListPromise(currentPage-1,OFFSET)
+            await getCharactersPromise(currentPage)
             .then(res => {
-                    setPokemonsPageContent([...pokemonsPageContent, ...res.data.results])
+                    dispatch({ type: "addCharacters", payload: [...res.data.results] })
+
                     setMaxPageLoaded(maxPageLoaded+1)
                     setLoading(false);
                 }
@@ -36,26 +37,23 @@ const MainContainer = () => {
       }, [currentPage])
 
     const handleClick = (type) => {
-        if (type==='previous') {
+        if (type === 'previous') {
             if (currentPage > 1) {
-                setCurrentPage(currentPage-1)
+                dispatch({ type: "previousPage"})
             }
         } else {
-            setCurrentPage(currentPage+1)
+            dispatch({ type: "nextPage"})
         }
     }
      
-    const buildColumns = (columns,index) => {
-         let myCols = Array(columns).fill([]);
+    const buildColumns = (colPos) => {
+        const MAX_COLUMNS = 3; 
+        let newCardsArray = Array(MAX_COLUMNS).fill([]);
 
-         return myCols.map((theCol, pos) => 
-                    [...theCol,
-                    <Col xs={12} md={4} key={pos}>
-                        <Card 
-                            name={pokemonsPageContent[index+pos].name}
-                            films=''
-                            birthyear=''
-                        />
+         return newCardsArray.map((Card, offset) => 
+                    [...Card,
+                    <Col xs={12} md={4} key={offset}>
+                        <CharacterCard row={currentPage-1} col={offset+colPos} />
                     </Col>]
                 )
     }
@@ -65,15 +63,18 @@ const MainContainer = () => {
         ?
         <>
         <Container fluid>
-            <Row>{buildColumns(3,INDEX)}</Row>
-            <Row>{buildColumns(3,(INDEX+3))}</Row>
-            <Row>{buildColumns(3,(INDEX+6))}</Row>
+            <Row>{buildColumns(0)}</Row>
+            <Row>{buildColumns(3)}</Row>
+            <Row>{buildColumns(6)}</Row>
         </Container>
-        <Button onClick={() => handleClick('previous')}>Previous</Button>
-        <Button onClick={() => handleClick('next')}>Next</Button>
+        <div className='main-container__buttons'>
+            <Button variant="primary" size="lg"  onClick={() => handleClick('previous')}>Previous</Button>
+            <Button variant="primary" size="lg" onClick={() => handleClick('next')}>Next</Button>
+        </div>
         </>
         : <div className='main-container__loading'>
-            <h1>Loading more pokemons...</h1>
+            <Spinner animation="border" variant="primary" />
+            <h1>Loading more characters...</h1>
         </div>
     )
 }
