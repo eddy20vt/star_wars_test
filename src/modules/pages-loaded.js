@@ -1,9 +1,7 @@
-function reducer(state = [], action){
+function reducer(state = 0, action){
     switch (action.type) {
-        case "setCharacters":
+        case "setPagesLoaded":
           return action.payload;
-        case "addCharacters":
-          return [...state, action.payload];
         default:
           return state;
       }

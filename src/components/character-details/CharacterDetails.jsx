@@ -29,6 +29,10 @@ export const CharacterDetails = () => {
         return urls.map(url => (getFilmsPromise(url))) 
     }
 
+    const handleGoBackClick = () => {
+        history.goBack()
+    }
+
     useEffect(() => {
         let filmsArray = [];
 
@@ -53,7 +57,7 @@ export const CharacterDetails = () => {
         <Container fluid className='character-details'>
             <Row>
                 <Col>
-                    <a href='##' onClick={() => history.goBack()}> {"< Back Home"} </a>
+                    <a href='##' onClick={() => handleGoBackClick()}> {"< Back Home"} </a>
                     <h2>{name}</h2>
                 </Col>
             </Row>

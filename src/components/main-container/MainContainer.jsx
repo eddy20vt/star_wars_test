@@ -10,10 +10,15 @@ import './MainContainer.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const MainContainer = () => {
-    const [maxPageLoaded, setMaxPageLoaded] = useState(0);
     const [loading, setLoading] = useState(false);
     // Redux
-    const currentPage = useSelector(state => state.pageCounter);
+    const storeStatus = useSelector(state => state);
+    const {
+        currentPage,
+        pagesLoaded,
+        reloadPage
+    } = storeStatus;
+
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -21,20 +26,24 @@ const MainContainer = () => {
             await getCharactersPromise(currentPage)
             .then(res => {
                     dispatch({ type: "addCharacters", payload: [...res.data.results] })
+                    dispatch({ type: "setPagesLoaded", payload: pagesLoaded+1 })
 
-                    setMaxPageLoaded(maxPageLoaded+1)
                     setLoading(false);
                 }
             )
             .catch(error => console.log(error))
         }
 
-        if ((currentPage > maxPageLoaded) || (currentPage === 0)){
+        if ((currentPage > pagesLoaded) && reloadPage){
             setLoading(true);
             fetch();   
         }
+        console.log('reloadPage: ', reloadPage, pagesLoaded, currentPage);
+        if (!reloadPage){
+            setLoading(false);
+        }
 
-      }, [currentPage, dispatch, maxPageLoaded])
+      }, [currentPage, dispatch, pagesLoaded, reloadPage])
 
     const handleClick = (type) => {
         if (type === 'previous') {
@@ -42,6 +51,7 @@ const MainContainer = () => {
                 dispatch({ type: "previousPage"})
             }
         } else {
+            dispatch({type: 'setReloadPage', payload: true})
             dispatch({ type: "nextPage"})
         }
     }
@@ -59,7 +69,7 @@ const MainContainer = () => {
     }
 
     return (
-        !loading && maxPageLoaded >= currentPage 
+        !loading && pagesLoaded >= currentPage 
         ?
             <>
             <Container fluid>
@@ -75,7 +85,7 @@ const MainContainer = () => {
         : 
             <div className='main-container__loading'>
                 <Spinner animation="border" variant="primary" />
-                <h1>Loading more characters...</h1>
+                <h1>Loading Characters...</h1>
             </div>
     )
 }
