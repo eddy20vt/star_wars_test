@@ -3,11 +3,7 @@ import { useSelector } from "react-redux";
 import { Container, Row, Col, Spinner } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 
-
 import { getFilmsPromise } from '../../api/index'
-
-
-import mockedDetails from '../../mockData/details.json';
 
 import './CharacterDetails.css';
 
@@ -15,6 +11,7 @@ export const CharacterDetails = () => {
     const [filmNames, setFilmNames] = useState(null);
     const history = useHistory();
     const storeState = useSelector(state => state);
+    const {row, col} = storeState.selectedCharacter;
 
     const { 
         name, 
@@ -24,10 +21,9 @@ export const CharacterDetails = () => {
         hair_color, 
         eye_color, 
         skin_color, 
-        birth_year, 
-    } = storeState.characters[0][1];
-
-    // console.log('storeState.results[0][0]: ', storeState.characters[0][1]);
+        birth_year,
+        films 
+    } = storeState.characters[row][col];
 
     const _buildPromises = (urls) => {
         return urls.map(url => (getFilmsPromise(url))) 
@@ -49,9 +45,9 @@ export const CharacterDetails = () => {
             setFilmNames(filmsArray);
         }
 
-        fetch(mockedDetails.films);
+        fetch(films);
 
-      }, [])
+      }, [films])
 
     return (
         <Container fluid className='character-details'>
@@ -77,8 +73,12 @@ export const CharacterDetails = () => {
             <Row>
                 <Col>
                     <div className='character-details__films'>
-                        {!filmNames && 
-                            <Spinner animation="border" variant="primary" />}
+                        {!filmNames &&
+                            <div className='character-details__loading'>
+                                <Spinner animation="border" variant="primary" />
+                                <h3>Loading films...</h3>
+                            </div>
+                        }
                         {filmNames &&
                             <>
                             <h3>{`${filmNames.length} films`}</h3>

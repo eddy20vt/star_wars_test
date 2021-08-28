@@ -34,7 +34,7 @@ const MainContainer = () => {
             fetch();   
         }
 
-      }, [currentPage])
+      }, [currentPage, dispatch, maxPageLoaded])
 
     const handleClick = (type) => {
         if (type === 'previous') {
@@ -53,7 +53,7 @@ const MainContainer = () => {
          return newCardsArray.map((Card, offset) => 
                     [...Card,
                     <Col xs={12} md={4} key={offset}>
-                        <CharacterCard row={currentPage-1} col={offset+colPos} />
+                        <CharacterCard row={currentPage-1} col={offset+colPos} apiId={((currentPage-1)*9)+(offset+colPos)}/>
                     </Col>]
                 )
     }
@@ -61,21 +61,22 @@ const MainContainer = () => {
     return (
         !loading && maxPageLoaded >= currentPage 
         ?
-        <>
-        <Container fluid>
-            <Row>{buildColumns(0)}</Row>
-            <Row>{buildColumns(3)}</Row>
-            <Row>{buildColumns(6)}</Row>
-        </Container>
-        <div className='main-container__buttons'>
-            <Button variant="primary" size="lg"  onClick={() => handleClick('previous')}>Previous</Button>
-            <Button variant="primary" size="lg" onClick={() => handleClick('next')}>Next</Button>
-        </div>
-        </>
-        : <div className='main-container__loading'>
-            <Spinner animation="border" variant="primary" />
-            <h1>Loading more characters...</h1>
-        </div>
+            <>
+            <Container fluid>
+                <Row>{buildColumns(0)}</Row>
+                <Row>{buildColumns(3)}</Row>
+                <Row>{buildColumns(6)}</Row>
+            </Container>
+            <div className='main-container__buttons'>
+                <Button variant="primary" size="lg"  onClick={() => handleClick('previous')}>Previous</Button>
+                <Button variant="primary" size="lg" onClick={() => handleClick('next')}>Next</Button>
+            </div>
+            </>
+        : 
+            <div className='main-container__loading'>
+                <Spinner animation="border" variant="primary" />
+                <h1>Loading more characters...</h1>
+            </div>
     )
 }
 
