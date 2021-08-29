@@ -51,7 +51,7 @@ export const CharacterDetails = () => {
                     filmsArray.push({title: res.data.title, date: res.data.release_date});
                 })
             }).catch(errorMsg => {
-                console.log(errorMsg)
+                console.log(errorMsg);
             });
 
             setFilmNames(filmsArray);
@@ -71,7 +71,6 @@ export const CharacterDetails = () => {
             eye_color, 
             skin_color, 
             birth_year,
-
         } = details;
 
         return (
@@ -118,16 +117,16 @@ export const CharacterDetails = () => {
                         }
                         {filmNames &&
                             <>
-                            <h3>{`${filmNames.length} films`}</h3>
-                            <ul>
-                            {filmNames.map((film, key) => {
-                                    const currentYear = new Date().getFullYear();
-                                    const releaseYear = new Date(film.date).getFullYear();
+                                <h3>{`${filmNames.length} films`}</h3>
+                                <ul>
+                                {filmNames.map((film, key) => {
+                                        const currentYear = new Date().getFullYear();
+                                        const releaseYear = new Date(film.date).getFullYear();
 
-                                    return <li key={key}>{`${film.title}: ${currentYear - releaseYear} years ago`}</li>
-                                })
-                            }
-                            </ul>
+                                        return <li key={key}>{`${film.title}: ${currentYear - releaseYear} years ago`}</li>
+                                    })
+                                }
+                                </ul>
                             </>
                         }
                     </div>

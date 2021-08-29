@@ -10,7 +10,7 @@ export const CharacterCard = ({id}) => {
 
     const handleClick = () => {
         dispatch({type:'setCharacter', payload: id});
-        dispatch({type: 'setReloadPage', payload: false})
+        dispatch({type: 'setReloadPage', payload: false});
     }
 
     const {

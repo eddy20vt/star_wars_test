@@ -29,9 +29,9 @@ const MainContainer = () => {
             .then(res => {
                 if(res.status === 200){
                     setLoading(true);
-                    setTotalCharacters(res.data.count)
-                    dispatch({ type: "addCharacters", payload: res.data.results })
-                    dispatch({ type: "setPagesLoaded", payload: pagesLoaded+1 })
+                    setTotalCharacters(res.data.count);
+                    dispatch({ type: "addCharacters", payload: res.data.results });
+                    dispatch({ type: "setPagesLoaded", payload: pagesLoaded+1 });
                     setLoading(false);
                 }
             })
@@ -48,24 +48,14 @@ const MainContainer = () => {
         }
 
       }, [currentPage, dispatch, pagesLoaded, reloadPage])
-
-    const handleClick = (type) => {
-        if (type === 'previous') {
-            if (currentPage > 1) {
-                dispatch({ type: "previousPage"})
-            }
-        } else {
-            dispatch({type: 'setReloadPage', payload: true})
-            dispatch({ type: "nextPage"})
-        }
-    }
      
-    const buildColumns = (colPos) => {
-        const MAX_COLUMNS = 3; 
+    const buildColumns = (initialColumnPosition) => {
+        const MAX_COLUMNS = 3;
+        const MAX_CARDS = 9; 
         let newCardsArray = Array(MAX_COLUMNS).fill([]);
        
          return newCardsArray.map((Card, offset) => {
-            const index = ((currentPage-1)*9)+(offset+colPos);
+            const index = ((currentPage-1) * MAX_CARDS) + (initialColumnPosition + offset);
             return ( index < totalCharacters &&
                 [...Card,
                     <Col xs={12} md={4} key={offset}>
@@ -75,6 +65,24 @@ const MainContainer = () => {
             )
             }
          )
+    }
+
+    const handleClick = (type) => {
+        if (type === 'Previous') {
+            dispatch({ type: "previousPage"});
+        } else {
+            dispatch({type: 'setReloadPage', payload: true});
+            dispatch({ type: "nextPage"});
+        }
+    }
+
+    const _renderBoton = (action) => {
+        if((action === 'Next') && (pagesLoaded < currentPage)) 
+            return <Button variant="primary" size="lg" disabled>Next</Button>
+        if((action === 'Previous') && (currentPage === 1)) 
+            return <Button variant="primary" size="lg" disabled>Previous</Button>
+        
+        return <Button variant="primary" size="lg" onClick={() => handleClick(action)}>{action}</Button>
     }
 
     return (
@@ -87,8 +95,8 @@ const MainContainer = () => {
                 <Row>{buildColumns(6)}</Row>
             </Container>
             <div className='main-container__buttons'>
-                <Button variant="primary" size="lg"  onClick={() => handleClick('previous')}>Previous</Button>
-                <Button variant="primary" size="lg" onClick={() => handleClick('next')}>Next</Button>
+                {_renderBoton('Previous')}
+                {_renderBoton('Next')}
             </div>
             </>
         : 

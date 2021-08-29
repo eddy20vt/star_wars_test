@@ -1,12 +1,15 @@
-# Getting Started with Create React App
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-## Available Scripts
-
 In the project directory, you can run:
 
+with yarn:
+
+### `yarn install`
 ### `yarn start`
+
+or with npm
+
+### `npm i`
+### `npm start`
+
 
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
@@ -14,57 +17,23 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
 
-### `yarn test`
+The only basic requirement that I've not implemented is the 3 cards in the mobile view.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+To be honest, I noticed that too late. I'm used to show more or less the same info for desktops and mobile but in responsive design. It was an assumption by my side.
 
-### `yarn build`
+I used some modules to complete the task.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+1 - react-bootstrap: I used this front-end framework to provide a basic structure to the proyect and organice the components in rows and columns.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+2 - react-router-dom: This module is used to provide a basic routing to the proyect. It allows to work inside an SPA and jump to diferent routes without any load from the server.
+In my case to jump from the main container to the details one.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+3 - react-redux: This tool allows to control a predictable state container and keep a gobal store (status) for the SPA.
 
-### `yarn eject`
+My UX improvements are provide with Redux a kind of cache. My implementation only calls to the API when are retreiving new data. 
+Once I get the data from the server, I save it in the store state and I can jump to the next or previous pages without call again to the server if the data already exists in the store. 
+The navigation is pretty fast so.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Also with Redux I share the details with the details page, I don't need to call again to the server to get the data for the selected character, just to store the character Id and access to the whole character data.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+The load of the films is asynchronous to let us show the rest of data meanwhile the films info is retrieved.
