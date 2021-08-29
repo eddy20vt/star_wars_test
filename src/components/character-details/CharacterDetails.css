@@ -7,16 +7,12 @@
     color: green;
     font-size: 18px;
     padding: 20px;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-content: space-around;
-    justify-content: left;
 }
 
 @media (max-width: 600px) {
     .character-details__atributes {
         flex-direction: column;
+        align-content: flex-start;
     }
   }
 
@@ -28,12 +24,8 @@
     text-align: center;
 }
 
-h2{
-    text-decoration: none;
-}
-
-h3 {
-    color: red;
+character-details__columns {
+    padding: 20px;
 }
 
 .character-details a:hover,
@@ -43,4 +35,12 @@ h3 {
 {
     font-size: 16px;
     color: black;
+}
+
+h2{
+    text-decoration: none;
+}
+
+h3 {
+    color: red;
 }

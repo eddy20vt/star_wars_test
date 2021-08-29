@@ -29,10 +29,6 @@ export const CharacterDetails = () => {
         return urls.map(url => (getFilmsPromise(url))) 
     }
 
-    const handleGoBackClick = () => {
-        history.goBack()
-    }
-
     useEffect(() => {
         let filmsArray = [];
 
@@ -53,6 +49,31 @@ export const CharacterDetails = () => {
 
       }, [films])
 
+    
+    const handleGoBackClick = () => {
+        history.goBack()
+    }
+
+    const buildAttributesTable = () => {
+        return (
+            <Container fluid className={'character-details__atributes'}>
+            <Row>
+                <Col xs={12} md={4}><p className={'character-details__columns'}>{`Height: ${height}`}</p></Col>
+                <Col xs={12} md={4}><p className={'character-details__columns'}>{`Gender: ${gender}`}</p></Col>
+                <Col xs={12} md={4}><p className={'character-details__columns'}>{`Mass: ${mass}`}</p></Col>
+            </Row>
+            <Row>
+                <Col xs={12} md={4}><p className={'character-details__columns'}>{`Hair color: ${hair_color}`}</p></Col>
+                <Col xs={12} md={4}><p className={'character-details__columns'}>{`Eye color: ${eye_color}`}</p></Col>
+                <Col xs={12} md={4}><p className={'character-details__columns'}>{`Skin color: ${skin_color}`}</p></Col>
+            </Row>
+            <Row>
+                <Col xs={12} md={4}><p className={'character-details__columns'}>{`Birth year: ${birth_year}`}</p></Col>
+            </Row>
+            </Container>
+        )
+    }
+
     return (
         <Container fluid className='character-details'>
             <Row>
@@ -63,16 +84,8 @@ export const CharacterDetails = () => {
             </Row>
             <Row>
                 <Col>
-                    <div className='character-details__atributes'>
-                        <p>{`Height: ${height}`}</p>
-                        <p>{`Gender: ${gender}`}</p>
-                        <p>{`Mass: ${mass}`}</p>
-                        <p>{`Hair color: ${hair_color}`}</p>
-                        <p>{`Eye color: ${eye_color}`}</p>
-                        <p>{`Skin color: ${skin_color}`}</p>
-                        <p>{`Birth year: ${birth_year}`}</p>
-                    </div>
-            </Col>
+                    {buildAttributesTable()}
+                </Col>
             </Row>
             <Row>
                 <Col>

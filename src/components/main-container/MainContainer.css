@@ -4,10 +4,9 @@
 
 .main-container__buttons{
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
 }
 
-.main-container__buttons .button{
-    width: 120px;
-    margin: 10px;
+.main-container__buttons .btn{
+    flex: 0.2
 }
