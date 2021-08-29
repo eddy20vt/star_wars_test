@@ -11,6 +11,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 const MainContainer = () => {
     const [loading, setLoading] = useState(false);
+    const [totalCharacters, setTotalCharacters] = useState(Number.MAX_SAFE_INTEGER);
     // Redux
     const storeStatus = useSelector(state => state);
     const {
@@ -26,17 +27,19 @@ const MainContainer = () => {
         const fetch = async () => {        
             await getCharactersPromise(currentPage)
             .then(res => {
+                if(res.status === 200){
                     setLoading(true);
+                    setTotalCharacters(res.data.count)
                     dispatch({ type: "addCharacters", payload: res.data.results })
                     dispatch({ type: "setPagesLoaded", payload: pagesLoaded+1 })
                     setLoading(false);
                 }
-            )
+            })
             .catch(error => console.log(error))
         }
 
         if ((currentPage > pagesLoaded) && reloadPage){
-            if (characters.length < 81)
+            if (characters.length < totalCharacters) 
                 fetch();   
         }
 
@@ -63,7 +66,7 @@ const MainContainer = () => {
        
          return newCardsArray.map((Card, offset) => {
             const index = ((currentPage-1)*9)+(offset+colPos);
-            return ( index <= 81 &&
+            return ( index < totalCharacters &&
                 [...Card,
                     <Col xs={12} md={4} key={offset}>
                         <CharacterCard id={index+1}/>
@@ -75,7 +78,7 @@ const MainContainer = () => {
     }
 
     return (
-        !loading && (pagesLoaded >= currentPage || characters.length > 81)
+        !loading && (pagesLoaded >= currentPage || characters.length >= totalCharacters)
         ?
             <>
             <Container fluid>
