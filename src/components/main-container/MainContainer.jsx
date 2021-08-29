@@ -16,7 +16,8 @@ const MainContainer = () => {
     const {
         currentPage,
         pagesLoaded,
-        reloadPage
+        reloadPage,
+        characters
     } = storeStatus;
 
     const dispatch = useDispatch();
@@ -25,9 +26,9 @@ const MainContainer = () => {
         const fetch = async () => {        
             await getCharactersPromise(currentPage)
             .then(res => {
+                    setLoading(true);
                     dispatch({ type: "addCharacters", payload: res.data.results })
                     dispatch({ type: "setPagesLoaded", payload: pagesLoaded+1 })
-
                     setLoading(false);
                 }
             )
@@ -35,8 +36,8 @@ const MainContainer = () => {
         }
 
         if ((currentPage > pagesLoaded) && reloadPage){
-            setLoading(true);
-            fetch();   
+            if (characters.length < 81)
+                fetch();   
         }
 
         if (!reloadPage){
@@ -62,7 +63,7 @@ const MainContainer = () => {
        
          return newCardsArray.map((Card, offset) => {
             const index = ((currentPage-1)*9)+(offset+colPos);
-            return (
+            return ( index <= 81 &&
                 [...Card,
                     <Col xs={12} md={4} key={offset}>
                         <CharacterCard id={index+1}/>
@@ -74,7 +75,7 @@ const MainContainer = () => {
     }
 
     return (
-        !loading && pagesLoaded >= currentPage 
+        !loading && (pagesLoaded >= currentPage || characters.length > 81)
         ?
             <>
             <Container fluid>
