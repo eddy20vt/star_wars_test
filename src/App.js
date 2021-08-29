@@ -28,7 +28,7 @@ function App() {
         <Route path="/about">
           {characters && <MainContainer data={[...characters].slice(0,9)}/>}
         </Route>
-        <Route path="/details">
+        <Route path="/details/:id">
           <CharacterDetails/>
         </Route>
         <Route path="/">

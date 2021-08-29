@@ -1,29 +1,42 @@
 import React, {useEffect, useState} from 'react'
 import { useSelector } from "react-redux";
 import { Container, Row, Col, Spinner } from 'react-bootstrap';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 
-import { getFilmsPromise } from '../../api/index'
+import { getFilmsPromise, getDetailsPromise } from '../../api/index'
 
 import './CharacterDetails.css';
 
 export const CharacterDetails = () => {
     const [filmNames, setFilmNames] = useState(null);
+    const [details, setDetails] = useState(null);
     const history = useHistory();
     const storeState = useSelector(state => state);
-    const {row, col} = storeState.selectedCharacter;
+    let { id } = useParams();
 
-    const { 
-        name, 
-        height, 
-        gender, 
-        mass, 
-        hair_color, 
-        eye_color, 
-        skin_color, 
-        birth_year,
-        films 
-    } = storeState.characters[row][col];
+    useEffect(() => {
+        const {
+            pagesLoaded,
+            selectedCharacter,
+            characters
+        } = storeState;
+
+        const fetchDetails = async () => {           
+                await getDetailsPromise(id)
+                .then(res => {
+                    setDetails(res.data);
+                    }
+                )
+                .catch(error => console.log(error))
+            }
+
+            if (pagesLoaded === 0){
+                fetchDetails();
+            }else{
+                setDetails(characters[selectedCharacter-1]);
+            }
+    }, [id, storeState])
+
 
     const _buildPromises = (urls) => {
         return urls.map(url => (getFilmsPromise(url))) 
@@ -45,9 +58,9 @@ export const CharacterDetails = () => {
             setFilmNames(filmsArray);
         }
 
-        fetch(films);
+        details && fetch(details.films);
 
-      }, [films])
+      }, [details])
 
     
     const handleGoBackClick = () => {
@@ -55,6 +68,18 @@ export const CharacterDetails = () => {
     }
 
     const buildAttributesTable = () => {
+
+        const {
+            height, 
+            gender, 
+            mass, 
+            hair_color, 
+            eye_color, 
+            skin_color, 
+            birth_year,
+
+        } = details;
+
         return (
             <Container fluid className={'character-details__atributes'}>
             <Row>
@@ -75,11 +100,12 @@ export const CharacterDetails = () => {
     }
 
     return (
+        details &&
         <Container fluid className='character-details'>
             <Row>
                 <Col>
                     <a href='##' onClick={() => handleGoBackClick()}> {"< Back Home"} </a>
-                    <h2>{name}</h2>
+                    <h2>{details.name}</h2>
                 </Col>
             </Row>
             <Row>

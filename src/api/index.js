@@ -15,6 +15,12 @@ export const getCharactersPromise = (page) => axios({
     url: `https://swapi.dev/api/people/?page=${page}`
 });
 
+export const getDetailsPromise = (id) => axios({
+    headers: JSON_HEADER,
+    method: 'get',
+    url: `https://swapi.dev/api/people/${id}`
+});
+
 
 export const getPokemonListPromise = (page,limit) => axios({
     headers: JSON_HEADER,
