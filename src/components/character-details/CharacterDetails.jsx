@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import { useSelector } from "react-redux";
 import { Container, Row, Col, Spinner } from 'react-bootstrap';
-import { useHistory, useParams } from 'react-router-dom';
+import { useHistory, useParams, Link } from 'react-router-dom';
 
 import { getFilmsPromise, getDetailsPromise } from '../../api/index'
 
@@ -104,7 +104,9 @@ export const CharacterDetails = () => {
         <Container fluid className='character-details'>
             <Row>
                 <Col>
-                    <a href='##' onClick={() => handleGoBackClick()}> {"< Back Home"} </a>
+                    {/* <a href='##' onClick={() => handleGoBackClick()}> {"< Back Home"} </a> */}
+                    {/* <h2>{details.name}</h2> */}
+                    <Link to='/' >Back to main list</Link>
                     <h2>{details.name}</h2>
                 </Col>
             </Row>

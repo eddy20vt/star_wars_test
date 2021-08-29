@@ -62,7 +62,6 @@ const MainContainer = () => {
        
          return newCardsArray.map((Card, offset) => {
             const index = ((currentPage-1)*9)+(offset+colPos);
-            console.log('index: ', index);
             return (
                 [...Card,
                     <Col xs={12} md={4} key={offset}>
