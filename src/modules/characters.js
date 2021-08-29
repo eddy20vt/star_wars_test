@@ -3,7 +3,7 @@ function reducer(state = [], action){
         case "setCharacters":
           return action.payload;
         case "addCharacters":
-          return [...state, action.payload];
+          return [...state, ...action.payload];
         default:
           return state;
       }

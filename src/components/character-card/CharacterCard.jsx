@@ -4,13 +4,12 @@ import { useSelector, useDispatch } from "react-redux";
 
 import './CharacterCard.css';
 
-export const CharacterCard = ({row,col,apiId}) => {
+export const CharacterCard = ({id}) => {
     const storeCharacters = useSelector(state => state.characters);
     const dispatch = useDispatch();
 
     const handleClick = () => {
-        console.log('DATA', row,col);
-        dispatch({type:'setCharacter', payload:{row,col}});
+        dispatch({type:'setCharacter', payload: id});
         dispatch({type: 'setReloadPage', payload: false})
     }
 
@@ -18,11 +17,11 @@ export const CharacterCard = ({row,col,apiId}) => {
         birth_year,
         name,
         films,
-    } = storeCharacters[row][col];
+    } = storeCharacters[id-1];
 
     return (
         <div className='character_card'>
-            <h2><Link to={`/details/${apiId}`} onClick={()=>handleClick()}>{name}</Link></h2>
+            <h2><Link to={`/details/${id}`} onClick={()=>handleClick()}>{name}</Link></h2>
             <div className='character_card-footer'>
                 <p>{`${films.length} films`}</p>
                 <p>{`Birth Year: ${birth_year}`}</p>

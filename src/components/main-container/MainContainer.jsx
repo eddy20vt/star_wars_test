@@ -25,7 +25,7 @@ const MainContainer = () => {
         const fetch = async () => {        
             await getCharactersPromise(currentPage)
             .then(res => {
-                    dispatch({ type: "addCharacters", payload: [...res.data.results] })
+                    dispatch({ type: "addCharacters", payload: res.data.results })
                     dispatch({ type: "setPagesLoaded", payload: pagesLoaded+1 })
 
                     setLoading(false);
@@ -38,7 +38,7 @@ const MainContainer = () => {
             setLoading(true);
             fetch();   
         }
-        console.log('reloadPage: ', reloadPage, pagesLoaded, currentPage);
+
         if (!reloadPage){
             setLoading(false);
         }
@@ -59,13 +59,19 @@ const MainContainer = () => {
     const buildColumns = (colPos) => {
         const MAX_COLUMNS = 3; 
         let newCardsArray = Array(MAX_COLUMNS).fill([]);
-
-         return newCardsArray.map((Card, offset) => 
-                    [...Card,
+       
+         return newCardsArray.map((Card, offset) => {
+            const index = ((currentPage-1)*9)+(offset+colPos);
+            console.log('index: ', index);
+            return (
+                [...Card,
                     <Col xs={12} md={4} key={offset}>
-                        <CharacterCard row={currentPage-1} col={offset+colPos} apiId={((currentPage-1)*9)+(offset+colPos)}/>
-                    </Col>]
-                )
+                        <CharacterCard id={index+1}/>
+                    </Col>
+                ]
+            )
+            }
+         )
     }
 
     return (
